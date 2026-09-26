@@ -12,6 +12,15 @@ Para esta topología, debido a su sencillez, no posee una estructura compleja. C
 a la GUI del equipo. Luego se utilizó un Switch Cisco vIOS Switch como dispostivo intermediaro, el cual separa los equipo en 3 vlans diferentes (más adelante se mostrará un desglose de las redes). Por último,
 debido a la naturaleza del servidor web, en lugar de utilizar una PC virtual, opté por utlizar una máquina con Rocky Linux 10, para mejor demostración de ataque de este.
 
+
+
+
+<img width="1203" height="646" alt="Screenshot 2026-09-25 215637" src="https://github.com/user-attachments/assets/3900cd07-a76d-450b-a3b0-bf6e29cd9acf" />
+
+
+
+
+
 **Desglose de Direcciones IP con sus respectivos puertos**
 
 **FortiGate port1:** 192.168.1.12/24, Gateway 192.168.1.1
