@@ -1,0 +1,84 @@
+Running config Switch
+
+enable
+configure terminal
+hostname S1-2025-0804
+
+vlan 10
+name users
+exit
+
+vlan 20
+name Web
+exit
+
+vlan 30
+name DB
+exit
+
+interface gi0/0
+switchport mode trunk
+switchport trunk allowed vlan 10,20,30
+
+interface gi0/1
+switchport mode access
+switchport access vlan 30
+exit
+
+interface gi0/2
+switchport mode access
+switchport access vlan 20
+exit
+
+interface gi0/3
+switchport mode access
+switchport access vlan 10
+exit
+
+interface range interface gigabitEthernet0/1-3
+switchport port-security
+switchport port-security maximum 1
+switchport port-security violation restrict 
+
+exit
+
+enable secret clase0804
+no ip domain-lookup
+Banner motd #Solo personal autorizado#
+
+line vty 0 4
+login local
+transport input ssh
+exec-timeout 5 0
+
+exit
+copy running-config startup-config
+
+
+
+
+  
+Running config Web_server
+nmcli connection modify ens3 ipv4.addresses 25.8.4.2/28 ipv4.gateway 25.8.4.1 ipv4.method manual
+
+
+  
+  
+  
+DB_server
+ip 25.8.4.3 255.255.255.240 25.8.4.1
+save
+
+
+
+
+users
+ip dhcp
+
+
+
+FortiGate
+Configure system interface
+edit port1
+set mode dhcp
+set allowacces ping https http ssh
