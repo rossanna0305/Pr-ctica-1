@@ -1,7 +1,22 @@
-Explicación del laboratorio
+**Explicación del laboratorio
+**
 
-Configuración de FortiGate
 
+**Switch**
+
+
+**Creación de lasvlan**
+
+Decidí crear tres vlan para separar los dispositivos según la función que cumplen dentro de la topología. De esta forma, no todos quedan en la misma red y puedo controlar mejor qué comunicación puede tener cada uno.
+
+La VLAN 10 es para los usuarios, ya que desde ahí se realizan las conexiones a los servicios. La VLAN 20 es para el servidor WEB, que necesita recibir conexiones de los usuarios. Por último, la VLAN 30 es para el servidor de base de datos, ya que es un servicio que debe estar más protegido y no necesita estar disponible directamente para los usuarios.
+
+Separarlos de esta manera también me permite crear reglas más específicas en el FortiGate. Por ejemplo, permití que el servidor WEB se comunique con la base de datos por MySQL, pero bloqueé ese mismo acceso directamente desde los usuarios.
+
+
+
+
+**Configuración de FortiGate**
 <img width="1919" height="1022" alt="Screenshot 2026-09-25 224400" src="https://github.com/user-attachments/assets/98829282-5122-4195-b44a-4709b4184b6a" />
 
 
