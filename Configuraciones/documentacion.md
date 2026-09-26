@@ -2,6 +2,7 @@ Explicación del laboratorio
 
 Configuración de FortiGate
 
-(imagenes/Screenshot 2026-09-25 224400.png)
+![Captura de pantalla](./imagenes/Screenshot%202026-09-25%20224400.png)
+
 
 
