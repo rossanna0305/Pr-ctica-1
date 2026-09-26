@@ -2,7 +2,8 @@ Rossanna Desangles De Salas
 
 2025-0804
 
-Link video explicativo:
+Link video explicativo: https://youtu.be/TUKTnvE3BAk
+
 
 El objetivo principal de este proyecto es armar una red de computadoras que sea segura y que esté dividida en dos partes usando un firewall FortiGate. Para que el laboratorio sea único y auténtico, 
 todas las direcciones IP se calcularon usando los números de mi matrícula estudiantil, que es la 2025-0804. El sistema trabaja con la IP base 25.8.4.0. A excepción del port1 del FortiGate que tiene
