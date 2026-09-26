@@ -1,5 +1,7 @@
 Rossanna Desangles De Salas
+
 2025-0804
+
 Link video explicativo:
 
 El objetivo principal de este proyecto es armar una red de computadoras que sea segura y que esté dividida en dos partes usando un firewall FortiGate. Para que el laboratorio sea único y auténtico, 
@@ -13,11 +15,19 @@ debido a la naturaleza del servidor web, en lugar de utilizar una PC virtual, op
 **Desglose de Direcciones IP con sus respectivos puertos**
 
 **FortiGate port1:** 192.168.1.12/24, Gateway 192.168.1.1
+
 **FortiGate port2:** Conexión con Switch
+
 **vlan 10 users:** Red 25.8.4.0/28, Gateway 25.8.4.1, Users 25.8.4.2/28
+
 **vlan 20 Web**: Red 25.8.4.16/28, Gateway 25.8.4.17, WEB-Server 25.8.4.18/28
+
 **vlan 30 DB**: Red 25.8.4.32/28, Gateway 25.8.4.33, DB-Server 25.8.4.34/28
+
 **Switch Gi0/0**: FortiGate port2, Troncal, permitidas las vlan 10, vlan 20, vlan 30
+
 **Switch Gi0/1:** DB-Server, vlan 30
+
 **Switch Gi0/2:** WEB-Server, vlan 20
+
 **Switch Gi0/3:** Users, vlan 10
