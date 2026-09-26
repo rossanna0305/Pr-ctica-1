@@ -35,10 +35,56 @@ El acceso administrativo habilitado mediante PING no significa que los dispositi
 <img width="1919" height="1029" alt="Screenshot 2026-09-25 222941" src="https://github.com/user-attachments/assets/a92ed5d2-f7e8-4bec-a063-c930475390a2" />
 
 <br>
-Se configuró una ruta estática hacia 192.168.1.1, que corresponde al gateway de la red externa conectada al port1 del FortiGate. Esta ruta permite que el FortiGate sepa hacia dónde enviar el tráfico destinado a redes que no pertenecen directamente a sus interfaces configuradas.
+Se configuró una ruta estática hacia 192.168.1.1,que es el gateway de Cloud
+ conectada al port1 del FortiGate. Esta ruta permite que el FortiGate sepa hacia dónde enviar el tráfico destinado a redes que no pertenecen directamente a sus interfaces configuradas.
 
 La ruta utiliza 0.0.0.0/0, por lo que funciona como una ruta predeterminada. De esta manera, cuando los dispositivos de las VLAN internas necesitan comunicarse con redes externas, el tráfico es enviado desde el FortiGate hacia 192.168.1.1 a través de port1.
 
 Esta configuración es necesaria para que las redes internas puedan tener salida hacia el exterior y para que el FortiGate tenga definido el siguiente salto para el tráfico que no conoce directamente.
 
 <br>
+
+<img width="1919" height="1031" alt="Screenshot 2026-09-25 223121" src="https://github.com/user-attachments/assets/f0deb89d-5ceb-49b6-bee3-8fc06da78efb" />
+
+Las Firewall Policies se configuraron en el FortiGate para controlar el tráfico entre las diferentes redes de la topología. Estas políticas permiten definir qué comunicación está permitida y cuál debe ser bloqueada, tomando en cuenta el origen, destino, servicio y dirección de la comunicación.
+
+Se creó una política para permitir que los usuarios de la VLAN 10 tengan salida hacia Internet mediante la interfaz port1, utilizando NAT para realizar la traducción de las direcciones privadas.
+
+También se configuró una política para permitir la comunicación de los usuarios con el servidor WEB de la VLAN 20 mediante HTTPS. En esta política se aplicaron perfiles de seguridad como IPS, Deep Inspection y File Filter, con el objetivo de analizar y controlar el tráfico que llega al servidor.
+
+Para la comunicación con la VLAN 30, se configuró una política que bloquea a los usuarios el acceso al servicio MySQL mediante el puerto 3306 del servidor de base de datos.
+
+Por otro lado, se permitió que el servidor WEB pueda comunicarse con el servidor de base de datos mediante MySQL (TCP/3306), ya que esta comunicación es necesaria para que una aplicación web pueda utilizar la base de datos. También se mantiene una política posterior que bloquea otros tipos de tráfico entre ambas redes.
+
+Las políticas se organizan en un orden específico, ya que el FortiGate evalúa las reglas de arriba hacia abajo. Por esta razón, las reglas que permiten un servicio específico se colocan antes de las reglas generales de bloqueo.
+
+
+<img width="1919" height="1029" alt="Screenshot 2026-09-25 223245" src="https://github.com/user-attachments/assets/66e06aae-44b9-4de3-b4c9-ae53576e1c06" />
+
+
+Se configuró una firma de IPS (Intrusion Prevention System) llamada HTTP.URI.SQL.Injection, utilizada para detectar intentos de inyección SQL realizados a través de la URL de una solicitud HTTP.
+
+La firma fue habilitada dentro del sensor de IPS protect_http_server y se configuró con la acción Block, por lo que cuando FortiGate identifica tráfico que coincide con esta firma, bloquea la solicitud para evitar que llegue al servidor WEB.
+
+Esta firma se aplicó a la política de comunicación entre los usuarios de la VLAN 10 y el servidor WEB de la VLAN 20, lo que hace que el tráfico HTTPS sea inspeccionado en busca de este tipo de ataque.
+
+
+<img width="1919" height="1031" alt="Screenshot 2026-09-25 223418" src="https://github.com/user-attachments/assets/238a6755-e672-4fc0-a52c-20444602088c" />
+
+Se creó un Traffic Shaper para limitar el ancho de banda de los usuarios cuando acceden al servidor WEB. Se configuró Limit-Users-WEB como un Per IP Shaper, con un límite de 1024 kbps por usuario.
+
+Esta configuración es lo que evita que los usuarios consuman demasiado ancho de banda y afecte a los demás. Se aplicó al tráfico HTTP y HTTPS de los usuarios de la VLAN 10 hacia el servidor WEB de la VLAN 20
+
+
+<img width="1919" height="1031" alt="Screenshot 2026-09-25 223530" src="https://github.com/user-attachments/assets/87ff8105-25fa-4b2c-be7c-f72da2cb5e83" />
+
+Aquí se puede visualizar la política de traffic shaping ya aplicada con el perfil anteriormente creado.
+
+<img width="1919" height="1030" alt="Screenshot 2026-09-25 223620" src="https://github.com/user-attachments/assets/fa19f171-0bd7-4c7f-a8cf-9fd26b16cef5" />
+
+Se creó el filtro NoEjecutables para bloquear archivos ejecutables .exe. Este filtro se aplicó a la política de comunicación entre los usuarios y el servidor WEB.
+
+Con esto, cuando un usuario intente enviar un archivo ejecutable mediante esta conexión, FortiGate lo identifica y lo bloquea. Este perfil de seguridad se puede visualizar ya entre las imágenes de arriba, en la seccióde Firewall Policies.
+
+
+
